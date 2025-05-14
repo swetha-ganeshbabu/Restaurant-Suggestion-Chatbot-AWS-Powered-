@@ -26,24 +26,24 @@ A cloud-based dining concierge chatbot built with serverless architecture on AWS
 
 ## 🗂️ Project Structure
 
-cloud/
-├── frontend/                   # Static web interface
-│   ├── chat.html              # Main chat page
+clooud/
+├── frontend/                     # Static web interface
+│   ├── chat.html                 # Main chat page
 │   └── assets/
-│       ├── css/               # Styling (Bootstrap + custom)
-│       └── js/                # Chat logic + AWS SDK/API Gateway SDK
+│       ├── css/                  # Styling (Bootstrap + custom)
+│       └── js/                   # Chat logic + AWS SDK/API Gateway SDK
 │
-├── json/                      # Yelp data (raw, cleaned, bulk upload formats)
+├── json/                         # Yelp data (raw, cleaned, bulk upload formats)
 │   ├── restaurants_bulk_data.json
 │   ├── yelp_restaurants.json
 │   └── yelp_restaurants_cleaned.json
 │
-├── lambda_functions/          # Lambda function scripts
-│   ├── LF0.py                 # API Lambda – interfaces between frontend and Lex
-│   ├── LF1.py                 # Lex Hook Lambda – handles intent logic
-│   └── LF2.py                 # Queue worker Lambda – pulls from SQS, emails suggestions
+├── lambda_functions/             # Lambda function scripts
+│   ├── LF0.py                    # API Lambda – interfaces between frontend and Lex
+│   ├── LF1.py                    # Lex Hook Lambda – handles intent logic
+│   └── LF2.py                    # Queue worker Lambda – pulls from SQS, emails suggestions
 │
-├── other_scripts/             # Helper scripts
+├── other_scripts/                # Helper scripts
 │   ├── clean_data.py
 │   ├── yelp_fetch.py
 │   ├── format_bulk_upload.py
