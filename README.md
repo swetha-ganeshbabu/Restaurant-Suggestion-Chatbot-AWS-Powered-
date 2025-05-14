@@ -25,7 +25,7 @@ A cloud-based dining concierge chatbot built with serverless architecture on AWS
 - **CloudWatch/EventBridge** – Scheduler for LF2
 
 ## 🗂️ Project Structure
-
+```
 clooud/
 ├── frontend/                     # Static web interface
 │   ├── chat.html                 # Main chat page
@@ -48,6 +48,8 @@ clooud/
 │   ├── yelp_fetch.py
 │   ├── format_bulk_upload.py
 │   └── upload_to_dynamodb.py
+
+```
 
 ## 🛠️ Setup Instructions
 
