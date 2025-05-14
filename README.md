@@ -25,24 +25,25 @@ A cloud-based dining concierge chatbot built with serverless architecture on AWS
 - **CloudWatch/EventBridge** – Scheduler for LF2
 
 ## 🗂️ Project Structure
-clooud/
-├── frontend/                     # Static web interface
-│   ├── chat.html
+
+cloud/
+├── frontend/                   # Static web interface
+│   ├── chat.html              # Main chat page
 │   └── assets/
-│       ├── css/                 # Styling (Bootstrap + Custom)
-│       └── js/                  # Chat logic + AWS SDK/API Gateway SDK
+│       ├── css/               # Styling (Bootstrap + custom)
+│       └── js/                # Chat logic + AWS SDK/API Gateway SDK
 │
-├── json/                        # Yelp data (raw, cleaned, and bulk upload formats)
+├── json/                      # Yelp data (raw, cleaned, bulk upload formats)
 │   ├── restaurants_bulk_data.json
 │   ├── yelp_restaurants.json
 │   └── yelp_restaurants_cleaned.json
 │
-├── lambda_functions/           # Lambda scripts
-│   ├── LF0.py                  # API Lambda: interfaces between frontend and Lex
-│   ├── LF1.py                  # Lex Hook Lambda: handles intent logic
-│   └── LF2.py                  # Queue worker Lambda: pulls from SQS, emails suggestions
+├── lambda_functions/          # Lambda function scripts
+│   ├── LF0.py                 # API Lambda – interfaces between frontend and Lex
+│   ├── LF1.py                 # Lex Hook Lambda – handles intent logic
+│   └── LF2.py                 # Queue worker Lambda – pulls from SQS, emails suggestions
 │
-├── other_scripts/              # Helper scripts
+├── other_scripts/             # Helper scripts
 │   ├── clean_data.py
 │   ├── yelp_fetch.py
 │   ├── format_bulk_upload.py
@@ -95,29 +96,34 @@ clooud/
 
 ## 🧪 Example Conversation
 
-User: Hello
+User: Hello  
 Bot: Hi there, how can I help?
-User: I need restaurant suggestions
-Bot: Got it. What city?
-User: Manhattan
-Bot: What cuisine?
-User: Japanese
-Bot: For how many people?
-User: 2
-Bot: What time?
-User: 7 pm
-Bot: What’s your phone/email?
-User: 123-456-7890
-Bot: Great! Expect suggestions via email shortly.
+
+User: I need restaurant suggestions  
+Bot: Got it. What city are you dining in?
+
+User: Manhattan  
+Bot: Great. What cuisine would you like?
+
+User: Japanese  
+Bot: How many people?
+
+User: 2  
+Bot: What date and time?
+
+User: Today at 7 pm  
+Bot: Please share your phone number or email for updates.
+
+User: 123-456-7890  
+Bot: You're all set! Expect restaurant suggestions shortly.
 
 📧 Sample Email:
 
 Hello! Here are my Japanese restaurant suggestions for 2 people, today at 7 pm:
-	1.	Sushi Nakazawa, 23 Commerce St
-	2.	Jin Ramen, 3183 Broadway
-	3.	Nikko, 1280 Amsterdam Ave
+
+1. Sushi Nakazawa — 23 Commerce St  
+2. Jin Ramen — 3183 Broadway  
+3. Nikko — 1280 Amsterdam Ave  
 
 Enjoy your meal!
 
-- Store user’s last search in DynamoDB
-- When they return, greet them with a new suggestion based on past data
