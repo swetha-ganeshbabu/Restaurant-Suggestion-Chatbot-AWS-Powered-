@@ -2,6 +2,12 @@
 
 A cloud-based dining concierge chatbot built with serverless architecture on AWS. The system intelligently interacts with users to collect dining preferences and recommends restaurants via email using data from Yelp, DynamoDB, and Elasticsearch.
 
+## 🏗️ Architecture
+
+End-to-end flow: **User → S3 (static frontend) → API Gateway → Lambda LF0 → Amazon Lex → Lambda LF1 → SQS (Q1) → Lambda LF2**, with LF2 querying **Elasticsearch** (restaurant IDs / Yelp-backed index), **DynamoDB** (full restaurant details), sending mail via **SES**, and **EventBridge / CloudWatch** triggering LF2 on a schedule (e.g. every minute) to poll the queue.
+
+![AWS architecture diagram — Restaurant Suggestion Chatbot](docs/architecture-diagram.png)
+
 ## 🧠 Features
 
 - 🤖 Conversational chatbot powered by Amazon Lex
@@ -26,29 +32,28 @@ A cloud-based dining concierge chatbot built with serverless architecture on AWS
 
 ## 🗂️ Project Structure
 ```
-clooud/
-├── frontend/                     # Static web interface
-│   ├── chat.html                 # Main chat page
-│   └── assets/
-│       ├── css/                  # Styling (Bootstrap + custom)
-│       └── js/                   # Chat logic + AWS SDK/API Gateway SDK
-│
-├── json/                         # Yelp data (raw, cleaned, bulk upload formats)
-│   ├── restaurants_bulk_data.json
-│   ├── yelp_restaurants.json
-│   └── yelp_restaurants_cleaned.json
-│
-├── lambda_functions/             # Lambda function scripts
-│   ├── LF0.py                    # API Lambda – interfaces between frontend and Lex
-│   ├── LF1.py                    # Lex Hook Lambda – handles intent logic
-│   └── LF2.py                    # Queue worker Lambda – pulls from SQS, emails suggestions
-│
-├── other_scripts/                # Helper scripts
-│   ├── clean_data.py
-│   ├── yelp_fetch.py
-│   ├── format_bulk_upload.py
-│   └── upload_to_dynamodb.py
-
+.
+├── cloud/
+│   ├── frontend/                 # Static web interface
+│   │   ├── chat.html             # Main chat page
+│   │   └── assets/
+│   │       ├── css/              # Styling (Bootstrap + custom)
+│   │       └── js/               # Chat logic + AWS SDK / API Gateway SDK
+│   ├── json/                     # Yelp data (raw, cleaned, bulk upload formats)
+│   │   ├── restaurants_bulk_data.json
+│   │   ├── yelp_restaurants.json
+│   │   └── yelp_restaurants_cleaned.json
+│   ├── lambda_functions/         # Lambda function scripts
+│   │   ├── LF0.py                # API Lambda – frontend ↔ Lex
+│   │   ├── LF1.py                # Lex hook – intent logic
+│   │   └── LF2.py                # SQS worker – SES, ES, DynamoDB
+│   └── other_scripts/
+│       ├── clean_data.py
+│       ├── yelp_fetch.py
+│       ├── format_bulk_upload.py
+│       └── upload_to_dynamodb.py
+└── docs/
+    └── architecture-diagram.png  # AWS architecture (see Architecture section)
 ```
 
 ## 🛠️ Setup Instructions
