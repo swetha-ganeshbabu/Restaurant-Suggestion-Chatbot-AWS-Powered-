@@ -6,7 +6,38 @@ A cloud-based dining concierge chatbot built with serverless architecture on AWS
 
 End-to-end flow: **User → S3 (static frontend) → API Gateway → Lambda LF0 → Amazon Lex → Lambda LF1 → SQS (Q1) → Lambda LF2**, with LF2 querying **Elasticsearch** (restaurant IDs / Yelp-backed index), **DynamoDB** (full restaurant details), sending mail via **SES**, and **EventBridge / CloudWatch** triggering LF2 on a schedule (e.g. every minute) to poll the queue.
 
-![AWS architecture diagram — Restaurant Suggestion Chatbot](docs/architecture-diagram.png)
+The diagram is defined as **Mermaid** so it stays editable in Git and renders on GitHub. To tweak the layout, open [`docs/architecture.mmd`](docs/architecture.mmd) in [Mermaid Live Editor](https://mermaid.live).
+
+```mermaid
+flowchart TD
+    User([User])
+    S3["S3 — Frontend"]
+    APIG["API Gateway"]
+    LF0["Lambda — LF0"]
+    Lex["Amazon Lex"]
+    LF1["Lambda — LF1"]
+    SQS["SQS Queue — Q1"]
+    LF2["Lambda — LF2"]
+    SES["Amazon SES"]
+    ES["Elasticsearch"]
+    DDB["DynamoDB"]
+    EB["EventBridge / CloudWatch"]
+    Yelp[("Yelp Dataset")]
+
+    User -->|"Access frontend"| S3
+    S3 -->|"API calls"| APIG
+    APIG --> LF0
+    LF0 --> Lex
+    Lex --> LF1
+    LF1 -->|"Push message"| SQS
+    SQS -->|"Poll queue"| LF2
+    LF2 -->|"Send email"| SES
+    LF2 -->|"Query IDs"| ES
+    LF2 -->|"Fetch details"| DDB
+    EB -->|"Triggered every 1 min"| LF2
+    ES -->|"Stores Yelp data"| Yelp
+    DDB --> Yelp
+```
 
 ## 🧠 Features
 
@@ -53,7 +84,7 @@ End-to-end flow: **User → S3 (static frontend) → API Gateway → Lambda LF0 
 │       ├── format_bulk_upload.py
 │       └── upload_to_dynamodb.py
 └── docs/
-    └── architecture-diagram.png  # AWS architecture (see Architecture section)
+    └── architecture.mmd   # Mermaid source (matches README diagram; edit in mermaid.live)
 ```
 
 ## 🛠️ Setup Instructions

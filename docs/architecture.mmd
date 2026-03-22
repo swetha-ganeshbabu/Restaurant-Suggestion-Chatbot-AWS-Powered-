@@ -1,0 +1,30 @@
+%% Restaurant Suggestion Chatbot — AWS architecture
+%% Paste this file into https://mermaid.live to edit the diagram
+flowchart TD
+    User([User])
+    S3["S3 — Frontend"]
+    APIG["API Gateway"]
+    LF0["Lambda — LF0"]
+    Lex["Amazon Lex"]
+    LF1["Lambda — LF1"]
+    SQS["SQS Queue — Q1"]
+    LF2["Lambda — LF2"]
+    SES["Amazon SES"]
+    ES["Elasticsearch"]
+    DDB["DynamoDB"]
+    EB["EventBridge / CloudWatch"]
+    Yelp[("Yelp Dataset")]
+
+    User -->|"Access frontend"| S3
+    S3 -->|"API calls"| APIG
+    APIG --> LF0
+    LF0 --> Lex
+    Lex --> LF1
+    LF1 -->|"Push message"| SQS
+    SQS -->|"Poll queue"| LF2
+    LF2 -->|"Send email"| SES
+    LF2 -->|"Query IDs"| ES
+    LF2 -->|"Fetch details"| DDB
+    EB -->|"Triggered every 1 min"| LF2
+    ES -->|"Stores Yelp data"| Yelp
+    DDB --> Yelp
